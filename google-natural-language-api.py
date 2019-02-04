@@ -1,3 +1,7 @@
+# Need to set env variable via command line each session: https://cloud.google.com/docs/authentication/production#obtaining_and_providing_service_account_credentials_manually 
+# Open Command Prompt - [set GOOGLE_APPLICATION_CREDENTIALS=[PATH]
+
+
 # Imports the Google Cloud client library
 from google.cloud import language
 from google.cloud.language import enums
@@ -7,7 +11,7 @@ from google.cloud.language import types
 client = language.LanguageServiceClient()
 
 # The text to analyze
-text = u'Hello, world!'
+text = u'Sally ate the last donut, and Phil was extrememly upset.'
 document = types.Document(
     content=text,
     type=enums.Document.Type.PLAIN_TEXT)
