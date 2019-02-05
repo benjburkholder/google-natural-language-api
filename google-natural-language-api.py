@@ -11,7 +11,7 @@ from google.cloud.language import types
 client = language.LanguageServiceClient()
 
 # The text to analyze
-text = u'Sid had some mental health issues lately, chiefly depression, and needed to speak to someone. He booked an appointment with a shrink in hopes that he could get his head straight and emotions in check.'
+text = u'Sid has suffered some mental health issues lately, chiefly depression, and needed to speak to someone. He booked an appointment with a shrink in hopes that he could get his head straight and emotions in check.'
 document = types.Document(
     content=text,
     type=enums.Document.Type.PLAIN_TEXT)

@@ -8,7 +8,7 @@ from google.cloud.language import types
 import six
 import boilerplate
 
-text = 'Sid had some mental health issues lately, chiefly depression, and needed to speak to someone. He booked an appointment with a shrink in hopes that he could get his head straight and emotions in check.'
+text = 'Sid has suffered some mental health issues lately, chiefly depression, and needed to speak to someone. He booked an appointment with a shrink in hopes that he could get his head straight and emotions in check.'
 
 def classify_text(text):
     """Classifies content categories of the provided text."""
