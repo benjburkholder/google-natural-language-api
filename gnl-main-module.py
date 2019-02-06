@@ -10,7 +10,6 @@ from google.cloud.language import enums
 from google.cloud.language import types
 import six
 
-#text = 'Sid has suffered some mental health issues lately, chiefly depression, and needed to speak to someone. He booked an appointment with a shrink in hopes that he could get his head straight and emotions in check.'
 
 print('Choose an analysis to run:')
 print('')
@@ -50,6 +49,7 @@ if choice == 'B' or choice == 'b':
                 print(u'{:<16}: {}'.format('confidence', category.confidence))
                 file.write(u'{:<16}: {}'.format('name', category.name) + '\n')
                 file.write(u'{:<16}: {}'.format('confidence', category.confidence) + '\n')
+                file.write('\n')
                 file.close()
 
         classify_text(content)
@@ -63,8 +63,6 @@ if choice == 'D' or choice == 'd':
         # Instantiates a client
         client = language.LanguageServiceClient()
 
-        # The text to analyze
-        #text = u'Sid has suffered some mental health issues lately, chiefly depression, and needed to speak to someone. He booked an appointment with a shrink in hopes that he could get his head straight and emotions in check.'
         document = types.Document(
             content=content2,
             type=enums.Document.Type.PLAIN_TEXT)
@@ -75,6 +73,7 @@ if choice == 'D' or choice == 'd':
         #print('Text: {}'.format(content2))
         print('Sentiment: {}, {}'.format(sentiment.score, sentiment.magnitude))
         #file.write('Text: {}'.format(content2))
-        file.write('Sentiment: {}, {}'.format(sentiment.score, sentiment.magnitude))
+        file.write('Sentiment: {}, {}'.format(sentiment.score, sentiment.magnitude) + '\n')
+        file.write('\n')
         file.close()
     
