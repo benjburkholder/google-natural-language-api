@@ -32,7 +32,7 @@ while True:
         with open('gnl.txt', 'r') as gnl:
             content = gnl.read()
             #print(content)
-            file = open('gnl2.txt', 'a')
+            file = open('gnl.csv', 'a')
             def classify_text(text):
                 """Classifies content categories of the provided text."""
                 client = language.LanguageServiceClient()
@@ -47,7 +47,6 @@ while True:
                 categories = client.classify_text(document).categories
 
                 for category in categories:
-                    print(u'=' * 20)
                     print(u'{:<16}: {}'.format('name', category.name))
                     print(u'{:<16}: {}'.format('confidence', category.confidence))
                     file.write(u'{:<16}: {}'.format('name', category.name) + '\n')
@@ -62,7 +61,7 @@ while True:
         with open('gnl.txt', 'r') as gnl:
             content2 = gnl.read()
             #print(content)
-            file = open('gnl2.txt', 'a')
+            file = open('gnl.csv', 'a')
 
             # Instantiates a client
             client = language.LanguageServiceClient()
@@ -86,7 +85,7 @@ while True:
         with open('gnl.txt', 'r') as gnl:
             content3 = gnl.read()
             #print(content)
-            file = open('gnl2.txt', 'a')
+            file = open('gnl.csv', 'a')
             def entity_sentiment_text(text):
                 """Detects entity sentiment in the provided text."""
                 client = language.LanguageServiceClient()
@@ -117,7 +116,6 @@ while True:
                         print(u'Salience: {}'.format(entity.salience))
                         print(u'Sentiment: {}\n'.format(entity.sentiment))
                         
-                        file.write(('-' * 20) + '\n')
                         file.write(u'  Begin Offset : {}'.format(mention.text.begin_offset) + '\n')
                         file.write(u'  Content : {}'.format(mention.text.content) + '\n')
                         file.write(u'  Magnitude : {}'.format(mention.sentiment.magnitude) + '\n')
@@ -134,7 +132,7 @@ while True:
         with open('gnl.txt', 'r') as gnl:
             content4 = gnl.read()
             #print(content)
-            file = open('gnl2.txt', 'a')
+            file = open('gnl.csv', 'a')
             client = language.LanguageServiceClient()
 
             if isinstance(content4, six.binary_type):
@@ -159,7 +157,6 @@ while True:
                 entity.metadata.get('wikipedia_url', '-')))
                 print(u'{:<16}: {}'.format('mid', entity.metadata.get('mid', '-')))
 
-                file.write(('=' * 20) + '\n')
                 file.write(u'{:<16}: {}'.format('name', entity.name) + '\n')
                 file.write(u'{:<16}: {}'.format('type', entity_type.name) + '\n')
                 file.write(u'{:<16}: {}'.format('salience', entity.salience) + '\n')
@@ -175,7 +172,7 @@ while True:
         with open('gnl.txt', 'r') as gnl:
             content5 = gnl.read()
             #print(content)
-            file = open('gnl2.txt', 'a')
+            file = open('gnl.csv', 'a')
             def syntax_text(text):
                 """Detects syntax in the text."""
                 client = language.LanguageServiceClient()
