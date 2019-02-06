@@ -204,7 +204,7 @@ while True:
                 file.close()
             syntax_text(content5)
 
-    # This if statment handles if while loop continues or breaks
+    # This if statment handles if while loop continues or breaks based on user input
     decision = input('Run another analysis? (Y/N) ')
     if decision == 'N' or decision == 'n':
         break
