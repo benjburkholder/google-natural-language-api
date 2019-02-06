@@ -1,6 +1,6 @@
 # Documentation - https://cloud.google.com/natural-language/docs/classifying-text#language-classify-content-python
 
-# Install Python Boilerplate Moduel (pip install boilerplate) - used to extract HTML from webpages.
+# Install Python Boilerplate Module (pip install boilerplate) - used to extract HTML from webpages.
 
 from google.cloud import language
 from google.cloud.language import enums
@@ -27,6 +27,7 @@ def classify_text(text):
         print(u'=' * 20)
         print(u'{:<16}: {}'.format('name', category.name))
         print(u'{:<16}: {}'.format('confidence', category.confidence))
+
 
 
 classify_text(text)
