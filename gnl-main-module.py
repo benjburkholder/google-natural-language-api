@@ -17,7 +17,7 @@ while True:
     print('')
     print('Run Sentiment Analysis? (A)') #
     print('Run Content Classification? (B)') #
-    print('Run Entities Analysis? (C)')
+    print('Run Entities Analysis? (C)') #
     print('Run Entity Sentiment Analysis? (D)') #
     print('Run Syntax Analysis? (E)')
     print('-' * 20)
@@ -116,6 +116,15 @@ while True:
                         print(u'  Type : {}'.format(mention.type))
                         print(u'Salience: {}'.format(entity.salience))
                         print(u'Sentiment: {}\n'.format(entity.sentiment))
+                        file.write(u'  Begin Offset : {}'.format(mention.text.begin_offset))
+                        file.write(u'  Content : {}'.format(mention.text.content))
+                        file.write(u'  Magnitude : {}'.format(mention.sentiment.magnitude))
+                        file.write(u'  Sentiment : {}'.format(mention.sentiment.score))
+                        file.write(u'  Type : {}'.format(mention.type))
+                        file.write(u'Salience: {}'.format(entity.salience))
+                        file.write(u'Sentiment: {}\n'.format(entity.sentiment))
+                        file.write('\n')
+                        file.close()
             entity_sentiment_text(content3)
 
     # Entity Analysis (gnl-entities.py)
@@ -148,6 +157,53 @@ while True:
                 entity.metadata.get('wikipedia_url', '-')))
                 print(u'{:<16}: {}'.format('mid', entity.metadata.get('mid', '-')))
 
+                file.write('=' * 20)
+                file.write(u'{:<16}: {}'.format('name', entity.name))
+                file.write(u'{:<16}: {}'.format('type', entity_type.name))
+                file.write(u'{:<16}: {}'.format('salience', entity.salience))
+                file.write(u'{:<16}: {}'.format('wikipedia_url',
+                    entity.metadata.get('wikipedia_url', '-')))
+                file.write(u'{:<16}: {}'.format('mid', entity.metadata.get('mid', '-')))
+                file.write('\n')
+                file.close()
+
+
+    
+    # Syntax Analysis (gnl-analyze-syntax.py)
+    if choice == 'E' or choice == 'e':
+        with open('gnl.txt', 'r') as gnl:
+            content5 = gnl.read()
+            #print(content)
+            file = open('gnl2.txt', 'a')
+            def syntax_text(text):
+                """Detects syntax in the text."""
+                client = language.LanguageServiceClient()
+
+                if isinstance(text, six.binary_type):
+                    text = text.decode('utf-8')
+
+                # Instantiates a plain text document.
+                document = types.Document(
+                    content=text,
+                    type=enums.Document.Type.PLAIN_TEXT)
+
+                # Detects syntax in the document. You can also analyze HTML with:
+                #   document.type == enums.Document.Type.HTML
+                tokens = client.analyze_syntax(document).tokens
+
+                # part-of-speech tags from enums.PartOfSpeech.Tag
+                pos_tag = ('UNKNOWN', 'ADJ', 'ADP', 'ADV', 'CONJ', 'DET', 'NOUN', 'NUM',
+                        'PRON', 'PRT', 'PUNCT', 'VERB', 'X', 'AFFIX')
+
+                for token in tokens:
+                    print(u'{}: {}'.format(pos_tag[token.part_of_speech.tag],
+                                        token.text.content))
+                    file.write(u'{}: {}'.format(pos_tag[token.part_of_speech.tag],token.text.content))
+                file.write('\n')
+                file.close()
+            syntax_text(content5)
+
+    # This if statment handles if while loop continues or breaks
     decision = input('Run another analysis? (Y/N) ')
-    if decision == 'N':
+    if decision == 'N' or decision == 'n':
         break
