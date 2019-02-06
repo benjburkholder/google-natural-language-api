@@ -11,108 +11,143 @@ from google.cloud.language import types
 import six
 import sys
 
+while True:
+    print('-' * 20)
+    print('Choose an analysis to run:')
+    print('')
+    print('Run Sentiment Analysis? (A)') #
+    print('Run Content Classification? (B)') #
+    print('Run Entities Analysis? (C)')
+    print('Run Entity Sentiment Analysis? (D)') #
+    print('Run Syntax Analysis? (E)')
+    print('-' * 20)
+    print('')
 
-print('Choose an analysis to run:')
-print('')
-print('Run Sentiment Analysis? (A)')
-print('Run Content Classification? (B)')
-print('Run Entities Analysis? (C)')
-print('Run Entity Sentiment Analysis? (D)')
-print('Run Syntax Analysis? (E)')
-print('')
+    # Each analysis will correspond with a letter from the list above.
+    choice = input('Which Analysis to Run? ')
 
-# Each analysis will correspond with a letter from the list above.
-choice = input('Which Analysis to Run? ')
+    # Content Classification (gnl-classify.content.py)
+    if choice == 'B' or choice == 'b': 
 
-# Content Classification (gnl-classify.content.py)
-if choice == 'B' or choice == 'b': 
+        with open('gnl.txt', 'r') as gnl:
+            content = gnl.read()
+            #print(content)
+            file = open('gnl2.txt', 'a')
+            def classify_text(text):
+                """Classifies content categories of the provided text."""
+                client = language.LanguageServiceClient()
 
-    with open('gnl.txt', 'r') as gnl:
-        content = gnl.read()
-        #print(content)
-        file = open('gnl2.txt', 'a')
-        def classify_text(text):
-            """Classifies content categories of the provided text."""
+                if isinstance(text, six.binary_type):
+                    text = text.decode('utf-8')
+
+                document = types.Document(
+                    content=text.encode('utf-8'),
+                    type=enums.Document.Type.PLAIN_TEXT)
+
+                categories = client.classify_text(document).categories
+
+                for category in categories:
+                    print(u'=' * 20)
+                    print(u'{:<16}: {}'.format('name', category.name))
+                    print(u'{:<16}: {}'.format('confidence', category.confidence))
+                    file.write(u'{:<16}: {}'.format('name', category.name) + '\n')
+                    file.write(u'{:<16}: {}'.format('confidence', category.confidence) + '\n')
+                    file.write('\n')
+                    file.close()
+
+            classify_text(content)
+
+    # Sentiment Analsys (google-natural-language-api.py)
+    if choice == 'A' or choice == 'a':
+        with open('gnl.txt', 'r') as gnl:
+            content2 = gnl.read()
+            #print(content)
+            file = open('gnl2.txt', 'a')
+
+            # Instantiates a client
             client = language.LanguageServiceClient()
 
-            if isinstance(text, six.binary_type):
-                text = text.decode('utf-8')
-
             document = types.Document(
-                content=text.encode('utf-8'),
+                content=content2,
                 type=enums.Document.Type.PLAIN_TEXT)
 
-            categories = client.classify_text(document).categories
+            # Detects the sentiment of the text
+            sentiment = client.analyze_sentiment(document=document).document_sentiment
 
-            for category in categories:
-                print(u'=' * 20)
-                print(u'{:<16}: {}'.format('name', category.name))
-                print(u'{:<16}: {}'.format('confidence', category.confidence))
-                file.write(u'{:<16}: {}'.format('name', category.name) + '\n')
-                file.write(u'{:<16}: {}'.format('confidence', category.confidence) + '\n')
-                file.write('\n')
-                file.close()
+            #print('Text: {}'.format(content2))
+            print('Sentiment: {}, {}'.format(sentiment.score, sentiment.magnitude))
+            #file.write('Text: {}'.format(content2))
+            file.write('Sentiment: {}, {}'.format(sentiment.score, sentiment.magnitude) + '\n')
+            file.write('\n')
+            file.close()
 
-        classify_text(content)
+    # Entity Sentiment (gnl-entity-sentiment.py)
+    if choice == 'D' or choice == 'd':
+        with open('gnl.txt', 'r') as gnl:
+            content3 = gnl.read()
+            #print(content)
+            file = open('gnl2.txt', 'a')
+            def entity_sentiment_text(text):
+                """Detects entity sentiment in the provided text."""
+                client = language.LanguageServiceClient()
 
-# Sentiment Analsys (google-natural-language-api.py)
-if choice == 'A' or choice == 'a':
-    with open('gnl.txt', 'r') as gnl:
-        content2 = gnl.read()
-        #print(content)
-        file = open('gnl2.txt', 'a')
+                if isinstance(text, six.binary_type):
+                    text = text.decode('utf-8')
 
-        # Instantiates a client
-        client = language.LanguageServiceClient()
+                document = types.Document(
+                    content=text.encode('utf-8'),
+                    type=enums.Document.Type.PLAIN_TEXT)
 
-        document = types.Document(
-            content=content2,
-            type=enums.Document.Type.PLAIN_TEXT)
+                #  Detect and send native Python encoding to receive correct word offsets.
+                encoding = enums.EncodingType.UTF32
+                if sys.maxunicode == 65535:
+                    encoding = enums.EncodingType.UTF16
 
-        # Detects the sentiment of the text
-        sentiment = client.analyze_sentiment(document=document).document_sentiment
+                result = client.analyze_entity_sentiment(document, encoding)
 
-        #print('Text: {}'.format(content2))
-        print('Sentiment: {}, {}'.format(sentiment.score, sentiment.magnitude))
-        #file.write('Text: {}'.format(content2))
-        file.write('Sentiment: {}, {}'.format(sentiment.score, sentiment.magnitude) + '\n')
-        file.write('\n')
-        file.close()
+                for entity in result.entities:
+                    print('Mentions: ')
+                    print(u'Name: "{}"'.format(entity.name))
+                    for mention in entity.mentions:
+                        print(u'  Begin Offset : {}'.format(mention.text.begin_offset))
+                        print(u'  Content : {}'.format(mention.text.content))
+                        print(u'  Magnitude : {}'.format(mention.sentiment.magnitude))
+                        print(u'  Sentiment : {}'.format(mention.sentiment.score))
+                        print(u'  Type : {}'.format(mention.type))
+                        print(u'Salience: {}'.format(entity.salience))
+                        print(u'Sentiment: {}\n'.format(entity.sentiment))
+            entity_sentiment_text(content3)
 
-# Entity Sentiment (gnl-entity-sentiment.py)
-if choice == 'D' or choice == 'd':
-    with open('gnl.txt', 'r') as gnl:
-        content3 = gnl.read()
-        #print(content)
-        file = open('gnl2.txt', 'a')
-        def entity_sentiment_text(text):
-            """Detects entity sentiment in the provided text."""
+    # Entity Analysis (gnl-entities.py)
+    if choice == 'C' or choice == 'c':
+        with open('gnl.txt', 'r') as gnl:
+            content4 = gnl.read()
+            #print(content)
+            file = open('gnl2.txt', 'a')
             client = language.LanguageServiceClient()
 
-            if isinstance(text, six.binary_type):
-                text = text.decode('utf-8')
+            if isinstance(content4, six.binary_type):
+                content4 = content4.decode('utf-8')
 
+            # Instantiates a plain text document.
             document = types.Document(
-                content=text.encode('utf-8'),
+                content=content4,
                 type=enums.Document.Type.PLAIN_TEXT)
 
-            #  Detect and send native Python encoding to receive correct word offsets.
-            encoding = enums.EncodingType.UTF32
-            if sys.maxunicode == 65535:
-                encoding = enums.EncodingType.UTF16
+            # Detects entities in the document. You can also analyze HTML with:
+            # Document.type == enums.Document.Type.HTML
+            entities = client.analyze_entities(document).entities
 
-            result = client.analyze_entity_sentiment(document, encoding)
+            for entity in entities:
+                entity_type = enums.Entity.Type(entity.type)
+                print('=' * 20)
+                print(u'{:<16}: {}'.format('name', entity.name))
+                print(u'{:<16}: {}'.format('type', entity_type.name))
+                print(u'{:<16}: {}'.format('salience', entity.salience))
+                print(u'{:<16}: {}'.format('wikipedia_url',
+                entity.metadata.get('wikipedia_url', '-')))
+                print(u'{:<16}: {}'.format('mid', entity.metadata.get('mid', '-')))
 
-            for entity in result.entities:
-                print('Mentions: ')
-                print(u'Name: "{}"'.format(entity.name))
-                for mention in entity.mentions:
-                    print(u'  Begin Offset : {}'.format(mention.text.begin_offset))
-                    print(u'  Content : {}'.format(mention.text.content))
-                    print(u'  Magnitude : {}'.format(mention.sentiment.magnitude))
-                    print(u'  Sentiment : {}'.format(mention.sentiment.score))
-                    print(u'  Type : {}'.format(mention.type))
-                    print(u'Salience: {}'.format(entity.salience))
-                    print(u'Sentiment: {}\n'.format(entity.sentiment))
-        entity_sentiment_text(content3)
-    
+    decision = input('Run another analysis? (Y/N) ')
+    if decision == 'N':
+        break
