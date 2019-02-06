@@ -6,7 +6,6 @@ from google.cloud import language
 from google.cloud.language import enums
 from google.cloud.language import types
 import six
-import boilerplate
 
 text = 'Sid has suffered some mental health issues lately, chiefly depression, and needed to speak to someone. He booked an appointment with a shrink in hopes that he could get his head straight and emotions in check.'
 

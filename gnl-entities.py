@@ -30,3 +30,5 @@ for entity in entities:
     print(u'{:<16}: {}'.format('wikipedia_url',
           entity.metadata.get('wikipedia_url', '-')))
     print(u'{:<16}: {}'.format('mid', entity.metadata.get('mid', '-')))
+
+
