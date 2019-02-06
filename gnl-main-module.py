@@ -3,13 +3,13 @@ Importing other gnl modules is proving to be an issue for some reason, as a resu
 inlcude all code in this module and connect it with user input fields to control the flow.
 """
 
-import requests
-from bs4 import BeautifulSoup
+import sys
+#import requests
+#from bs4 import BeautifulSoup
 from google.cloud import language
 from google.cloud.language import enums
 from google.cloud.language import types
 import six
-import sys
 
 while True:
     print('-' * 20)
@@ -116,15 +116,17 @@ while True:
                         print(u'  Type : {}'.format(mention.type))
                         print(u'Salience: {}'.format(entity.salience))
                         print(u'Sentiment: {}\n'.format(entity.sentiment))
-                        file.write(u'  Begin Offset : {}'.format(mention.text.begin_offset))
-                        file.write(u'  Content : {}'.format(mention.text.content))
-                        file.write(u'  Magnitude : {}'.format(mention.sentiment.magnitude))
-                        file.write(u'  Sentiment : {}'.format(mention.sentiment.score))
-                        file.write(u'  Type : {}'.format(mention.type))
-                        file.write(u'Salience: {}'.format(entity.salience))
-                        file.write(u'Sentiment: {}\n'.format(entity.sentiment))
+                        
+                        file.write(('-' * 20) + '\n')
+                        file.write(u'  Begin Offset : {}'.format(mention.text.begin_offset) + '\n')
+                        file.write(u'  Content : {}'.format(mention.text.content) + '\n')
+                        file.write(u'  Magnitude : {}'.format(mention.sentiment.magnitude) + '\n')
+                        file.write(u'  Sentiment : {}'.format(mention.sentiment.score) + '\n')
+                        file.write(u'  Type : {}'.format(mention.type) + '\n')
+                        file.write(u'Salience: {}'.format(entity.salience) + '\n')
+                        file.write(u'Sentiment: {}\n'.format(entity.sentiment) + '\n')
                         file.write('\n')
-                        file.close()
+                file.close()
             entity_sentiment_text(content3)
 
     # Entity Analysis (gnl-entities.py)
@@ -157,15 +159,14 @@ while True:
                 entity.metadata.get('wikipedia_url', '-')))
                 print(u'{:<16}: {}'.format('mid', entity.metadata.get('mid', '-')))
 
-                file.write('=' * 20)
-                file.write(u'{:<16}: {}'.format('name', entity.name))
-                file.write(u'{:<16}: {}'.format('type', entity_type.name))
-                file.write(u'{:<16}: {}'.format('salience', entity.salience))
-                file.write(u'{:<16}: {}'.format('wikipedia_url',
-                    entity.metadata.get('wikipedia_url', '-')))
-                file.write(u'{:<16}: {}'.format('mid', entity.metadata.get('mid', '-')))
+                file.write(('=' * 20) + '\n')
+                file.write(u'{:<16}: {}'.format('name', entity.name) + '\n')
+                file.write(u'{:<16}: {}'.format('type', entity_type.name) + '\n')
+                file.write(u'{:<16}: {}'.format('salience', entity.salience) + '\n')
+                file.write(u'{:<16}: {}'.format('wikipedia_url', entity.metadata.get('wikipedia_url', '-')) + '\n')
+                file.write(u'{:<16}: {}'.format('mid', entity.metadata.get('mid', '-')) + '\n')
                 file.write('\n')
-                file.close()
+            file.close()
 
 
     
@@ -198,7 +199,7 @@ while True:
                 for token in tokens:
                     print(u'{}: {}'.format(pos_tag[token.part_of_speech.tag],
                                         token.text.content))
-                    file.write(u'{}: {}'.format(pos_tag[token.part_of_speech.tag],token.text.content))
+                    file.write(u'{}: {}'.format(pos_tag[token.part_of_speech.tag],token.text.content) + '\n')
                 file.write('\n')
                 file.close()
             syntax_text(content5)
