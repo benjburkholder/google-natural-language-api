@@ -164,8 +164,6 @@ while True:
                 file.write(u'{:<16}: {}'.format('mid', entity.metadata.get('mid', '-')) + '\n')
                 file.write('\n')
             file.close()
-
-
     
     # Syntax Analysis (gnl-analyze-syntax.py)
     if choice == 'E' or choice == 'e':
