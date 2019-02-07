@@ -52,7 +52,7 @@ while True:
 
             classify_text(content)
 
-    # Sentiment Analsys (google-natural-language-api.py)
+    # Sentiment Analysis (google-natural-language-api.py)
     if choice == 'A' or choice == 'a':
         with open('gnl.txt', 'r') as gnl:
             content2 = gnl.read()
