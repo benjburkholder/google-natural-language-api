@@ -1,7 +1,3 @@
-"""
-Importing other gnl modules is proving to be an issue for some reason, as a result, I'll just
-inlcude all code in this module and connect it with user input fields to control the flow.
-"""
 
 import sys
 #import requests
