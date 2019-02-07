@@ -27,7 +27,6 @@ while True:
 
         with open('gnl.txt', 'r') as gnl:
             content = gnl.read()
-            #print(content)
             file = open('gnl.csv', 'a')
             def classify_text(text):
                 """Classifies content categories of the provided text."""
@@ -56,7 +55,6 @@ while True:
     if choice == 'A' or choice == 'a':
         with open('gnl.txt', 'r') as gnl:
             content2 = gnl.read()
-            #print(content)
             file = open('gnl.csv', 'a')
 
             # Instantiates a client
@@ -80,7 +78,6 @@ while True:
     if choice == 'D' or choice == 'd':
         with open('gnl.txt', 'r') as gnl:
             content3 = gnl.read()
-            #print(content)
             file = open('gnl.csv', 'a')
             def entity_sentiment_text(text):
                 """Detects entity sentiment in the provided text."""
@@ -127,7 +124,6 @@ while True:
     if choice == 'C' or choice == 'c':
         with open('gnl.txt', 'r') as gnl:
             content4 = gnl.read()
-            #print(content)
             file = open('gnl.csv', 'a')
             client = language.LanguageServiceClient()
 
@@ -165,7 +161,6 @@ while True:
     if choice == 'E' or choice == 'e':
         with open('gnl.txt', 'r') as gnl:
             content5 = gnl.read()
-            #print(content)
             file = open('gnl.csv', 'a')
             def syntax_text(text):
                 """Detects syntax in the text."""
