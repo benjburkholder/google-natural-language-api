@@ -1,0 +1,5 @@
+- Sentiment Analysis
+- Content Classification - Text to test needs to be at LEAST 20 words long. Anything shorter and the program        will throw an error.
+- Entities Analysis
+- Entity Sentiment Analysis
+- Syntax Analysis
