@@ -7,11 +7,6 @@ from google.cloud.language import types
 from google.api_core.exceptions import InvalidArgument
 import six
 
-# Documentation - https://cloud.google.com/natural-language/docs/classifying-text#language-classify-content-python
-
-# Install Python Boilerplate Module (pip install boilerplate) - used to extract HTML from webpages.
-
-
 def classify_text(text):
     """Classifies content categories of the provided text."""
     client = language.LanguageServiceClient()
