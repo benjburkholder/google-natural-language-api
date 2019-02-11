@@ -60,14 +60,14 @@ if decision == 'direct':
                             'confidence', category.confidence))
                         print(u'{:<16}: {}'.format('content', content) + '\n')
                         print('')
-                        """
+                        
                         file.write(u'{:<16}: {}'.format(
                             'name', category.name) + '\n')
                         file.write(u'{:<16}: {}'.format(
                             'confidence', category.confidence) + '\n')
                         file.write('\n')
                     file.close()
-                        """
+                        
                 try:
                     classify_text(content)
                 except InvalidArgument as e:
@@ -95,12 +95,12 @@ if decision == 'direct':
                 print('Sentiment: {}, {}'.format(
                     sentiment.score, sentiment.magnitude))
 
-                """
+                file.write('Content: {}'.format(content2))
                 file.write('Sentiment: {}, {}'.format(
                     sentiment.score, sentiment.magnitude) + '\n')
                 file.write('\n')
                 file.close()
-                """
+                
 
         # Entity Sentiment (gnl-entity-sentiment.py)
         if choice == 'D' or choice == 'd':
@@ -250,6 +250,7 @@ if decision == 'bulk':
         # Content Classification (gnl-classify.content.py)
         if choice == 'B' or choice == 'b':
             def classify_text(text):
+                file = open('gnl.csv', 'a')
                 """Classifies content categories of the provided text."""
                 client = language.LanguageServiceClient()
 
@@ -268,6 +269,12 @@ if decision == 'bulk':
                     print(u'{:<16}: {}'.format('name', category.name))
                     print(u'{:<16}: {}'.format('confidence', category.confidence))
                     print(u'{:<16}: {}'.format('string', data) + '\n')
+                    
+                    file.write(u'{:<16}: {}'.format('url', url))
+                    file.write(u'{:<16}: {}'.format('name', category.name))
+                    file.write(u'{:<16}: {}'.format('confidence', category.confidence))
+                    file.write(u'{:<16}: {}'.format('string', data) + '\n')
+                file.close()
 
 
             with open('gnl-bulk-check.txt', 'r') as b:
@@ -294,7 +301,9 @@ if decision == 'bulk':
 
         # Sentiment Analysis (google-natural-language-api.py)
         if choice == 'A' or choice == 'a':
+            
             with open('gnl-bulk-check.txt', 'r') as b:
+                    file = open('gnl.csv', 'a')
                     content = b.readlines()
                     content = [line.rstrip('\n') for line in content]
                     for url in content:
@@ -311,8 +320,6 @@ if decision == 'bulk':
                         content = bs.find_all('p')
                         content = str(content)
                         
-                        file = open('gnl.csv', 'a')
-
                         # Instantiates a client
                         client = language.LanguageServiceClient()
 
@@ -324,24 +331,23 @@ if decision == 'bulk':
                         sentiment = client.analyze_sentiment(
                             document=document).document_sentiment
 
-                        # print('Text: {}'.format(content2))
                         print('URL~ {}'.format(url))
                         print('Sentiment: {}, {}'.format(
                             sentiment.score, sentiment.magnitude) + '\n')
                         print('')
-                        """
-                        # file.write('Text: {}'.format(content2))
+                        
+                        file.write('URL~ {}'.format(url))
                         file.write('Sentiment: {}, {}'.format(
                             sentiment.score, sentiment.magnitude) + '\n')
                         file.write('\n')
-                        file.close()
-                        """
+                    file.close()
+                        
 
         # Entity Sentiment (gnl-entity-sentiment.py)
         if choice == 'D' or choice == 'd':
-                file = open('gnl.csv', 'a')
 
                 def entity_sentiment_text(text):
+                    file = open('gnl.csv', 'a')
                     """Detects entity sentiment in the provided text."""
                     client = language.LanguageServiceClient()
 
@@ -375,7 +381,7 @@ if decision == 'bulk':
                             print(u'Salience: {}'.format(entity.salience))
                             print(u'Sentiment: {}\n'.format(entity.sentiment))
                             
-                            """
+                            
                             file.write(u'  Begin Offset : {}'.format(
                                 mention.text.begin_offset) + '\n')
                             file.write(u'  Content : {}'.format(
@@ -391,7 +397,7 @@ if decision == 'bulk':
                                 entity.sentiment) + '\n')
                             file.write('\n')
                     file.close()
-                            """
+                            
                 with open('gnl-bulk-check.txt', 'r') as b:
                     content = b.readlines()
                     content = [line.rstrip('\n') for line in content]
@@ -416,6 +422,7 @@ if decision == 'bulk':
         # Entity Analysis (gnl-entities.py)
         if choice == 'C' or choice == 'c':
             with open('gnl-bulk-check.txt', 'r') as b:
+                    file = open('gnl.csv', 'a')
                     content = b.readlines()
                     content = [line.rstrip('\n') for line in content]
                     for url in content:
@@ -432,7 +439,6 @@ if decision == 'bulk':
                         content = bs.find_all('p')
                         content = str(content)
                         
-                        file = open('gnl.csv', 'a')
                         client = language.LanguageServiceClient()
 
                         if isinstance(content, six.binary_type):
@@ -457,15 +463,15 @@ if decision == 'bulk':
                             print(u'{:<16}: {}'.format('wikipedia_url', entity.metadata.get('wikipedia_url', '-')))
                             print(u'{:<16}: {}'.format('mid', entity.metadata.get('mid', '-')))
 
-                            """
+                            file.write(u'{:<16}~ {}'.format('url', url)+ '\n')
                             file.write(u'{:<16}: {}'.format('name', entity.name) + '\n')
                             file.write(u'{:<16}: {}'.format('type', entity_type.name) + '\n')
                             file.write(u'{:<16}: {}'.format('salience', entity.salience) + '\n')
                             file.write(u'{:<16}: {}'.format('wikipedia_url', entity.metadata.get('wikipedia_url', '-')) + '\n')
                             file.write(u'{:<16}: {}'.format('mid', entity.metadata.get('mid', '-')) + '\n')
-                            ile.write('\n')
-                        file.close()
-                            """
+                            file.write('\n')
+                    file.close()
+                            
 
         # This if statment handles if while loop continues or breaks based on user input
         decision = input('Run another analysis? (Y/N) ')
