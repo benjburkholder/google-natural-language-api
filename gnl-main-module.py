@@ -36,11 +36,12 @@ if decision == 'direct':
         # Content Classification (gnl-classify.content.py)
         if choice == 'B' or choice == 'b':
 
-            with open('gnl.txt', 'r') as gnl:
+            with open('gnl-manual-upload.txt', 'r') as gnl:
                 content = gnl.read()
-                file = open('gnl.csv', 'a')
-
+                content = str(content)
+                
                 def classify_text(text):
+                    file = open('gnl.csv', 'a')
                     """Classifies content categories of the provided text."""
                     client = language.LanguageServiceClient()
 
@@ -57,17 +58,25 @@ if decision == 'direct':
                         print(u'{:<16}: {}'.format('name', category.name))
                         print(u'{:<16}: {}'.format(
                             'confidence', category.confidence))
+                        print(u'{:<16}: {}'.format('content', content) + '\n')
+                        print('')
+                        """
                         file.write(u'{:<16}: {}'.format(
                             'name', category.name) + '\n')
                         file.write(u'{:<16}: {}'.format(
                             'confidence', category.confidence) + '\n')
                         file.write('\n')
-                        file.close()
+                    file.close()
+                        """
+                try:
+                    classify_text(content)
+                except InvalidArgument as e:
+                    print(f'{e}')
 
 
         # Sentiment Analysis (google-natural-language-api.py)
         if choice == 'A' or choice == 'a':
-            with open('gnl.txt', 'r') as gnl:
+            with open('gnl-manual-upload.txt', 'r') as gnl:
                 content2 = gnl.read()
                 file = open('gnl.csv', 'a')
 
@@ -93,7 +102,7 @@ if decision == 'direct':
 
         # Entity Sentiment (gnl-entity-sentiment.py)
         if choice == 'D' or choice == 'd':
-            with open('gnl.txt', 'r') as gnl:
+            with open('gnl-manual-upload.txt', 'r') as gnl:
                 content3 = gnl.read()
                 file = open('gnl.csv', 'a')
 
@@ -149,7 +158,7 @@ if decision == 'direct':
 
         # Entity Analysis (gnl-entities.py)
         if choice == 'C' or choice == 'c':
-            with open('gnl.txt', 'r') as gnl:
+            with open('gnl-manual-upload.txt', 'r') as gnl:
                 content4 = gnl.read()
                 file = open('gnl.csv', 'a')
                 client = language.LanguageServiceClient()
@@ -185,7 +194,7 @@ if decision == 'direct':
 
         # Syntax Analysis (gnl-analyze-syntax.py)
         if choice == 'E' or choice == 'e':
-            with open('gnl.txt', 'r') as gnl:
+            with open('gnl-manual-upload.txt', 'r') as gnl:
                 content5 = gnl.read()
                 file = open('gnl.csv', 'a')
 
@@ -259,7 +268,7 @@ if decision == 'bulk':
                     print(u'{:<16}: {}'.format('string', data) + '\n')
 
 
-            with open('urls-gnl.txt', 'r') as b:
+            with open('gnl-bulk-check.txt', 'r') as b:
                 content = b.readlines()
                 content = [line.rstrip('\n') for line in content]
                 for url in content:
@@ -283,7 +292,7 @@ if decision == 'bulk':
 
         # Sentiment Analysis (google-natural-language-api.py)
         if choice == 'A' or choice == 'a':
-            with open('urls-gnl.txt', 'r') as b:
+            with open('gnl-bulk-check.txt', 'r') as b:
                     content = b.readlines()
                     content = [line.rstrip('\n') for line in content]
                     for url in content:
@@ -381,7 +390,7 @@ if decision == 'bulk':
                             file.write('\n')
                     file.close()
                             """
-                with open('urls-gnl.txt', 'r') as b:
+                with open('gnl-bulk-check.txt', 'r') as b:
                     content = b.readlines()
                     content = [line.rstrip('\n') for line in content]
                     for url in content:
@@ -404,7 +413,7 @@ if decision == 'bulk':
 
         # Entity Analysis (gnl-entities.py)
         if choice == 'C' or choice == 'c':
-            with open('urls-gnl.txt', 'r') as b:
+            with open('gnl-bulk-check.txt', 'r') as b:
                     content = b.readlines()
                     content = [line.rstrip('\n') for line in content]
                     for url in content:
