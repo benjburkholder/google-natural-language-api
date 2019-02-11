@@ -283,29 +283,48 @@ if decision == 'bulk':
 
         # Sentiment Analysis (google-natural-language-api.py)
         if choice == 'A' or choice == 'a':
-            with open('gnl.txt', 'r') as gnl:
-                content2 = gnl.read()
-                file = open('gnl.csv', 'a')
+            with open('urls-gnl.txt', 'r') as b:
+                    content = b.readlines()
+                    content = [line.rstrip('\n') for line in content]
+                    for url in content:
 
-                # Instantiates a client
-                client = language.LanguageServiceClient()
+                        try:
+                            html = urlopen(url)
 
-                document = types.Document(
-                    content=content2,
-                    type=enums.Document.Type.PLAIN_TEXT)
+                        except HTTPError as e:
 
-                # Detects the sentiment of the text
-                sentiment = client.analyze_sentiment(
-                    document=document).document_sentiment
+                            print(f'{e} ~ {url}')
 
-                # print('Text: {}'.format(content2))
-                print('Sentiment: {}, {}'.format(
-                    sentiment.score, sentiment.magnitude))
-                # file.write('Text: {}'.format(content2))
-                file.write('Sentiment: {}, {}'.format(
-                    sentiment.score, sentiment.magnitude) + '\n')
-                file.write('\n')
-                file.close()
+                        bs = BeautifulSoup(html, 'html.parser')
+
+                        content = bs.find_all('p')
+                        content = str(content)
+                        
+                        file = open('gnl.csv', 'a')
+
+                        # Instantiates a client
+                        client = language.LanguageServiceClient()
+
+                        document = types.Document(
+                            content=content,
+                            type=enums.Document.Type.PLAIN_TEXT)
+
+                        # Detects the sentiment of the text
+                        sentiment = client.analyze_sentiment(
+                            document=document).document_sentiment
+
+                        # print('Text: {}'.format(content2))
+                        print('URL~ {}'.format(url))
+                        print('Sentiment: {}, {}'.format(
+                            sentiment.score, sentiment.magnitude) + '\n')
+                        print('')
+                        """
+                        # file.write('Text: {}'.format(content2))
+                        file.write('Sentiment: {}, {}'.format(
+                            sentiment.score, sentiment.magnitude) + '\n')
+                        file.write('\n')
+                        file.close()
+                        """
 
         # Entity Sentiment (gnl-entity-sentiment.py)
         if choice == 'D' or choice == 'd':
