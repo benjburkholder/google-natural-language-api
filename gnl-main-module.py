@@ -256,20 +256,22 @@ if decision == 'bulk':
                 categories = client.classify_text(document).categories
 
                 for category in categories:
+                    print(u'{:<16}: {}'.format('url', url))
                     print(u'{:<16}: {}'.format('name', category.name))
-                    print(u'{:<16}: {}'.format('confidence', category.confidence))
-                    print(u'{:<16}: {}'.format('string', data))
+                    print(u'{:<16}: {}'.format('confidence', category.confidence) + '\n')
+
                     file.write(u'{:<16}: {}'.format('name', category.name) + '\n')
                     file.write(u'{:<16}: {}'.format('confidence', category.confidence) + '\n')
-                    file.write(u'{:<16}: {}'.format('string', data))
                     file.write('\n')
                 file.close()
 
             with open('urls-gnl.txt', 'r') as b:
                 content2 = b.readlines()
+                content2 = [line.rstrip('\n') for line in content2]
                 for url in content2:
 
                     try:
+                        
                         html = urlopen(url)
 
                     except HTTPError as e:
@@ -281,8 +283,8 @@ if decision == 'bulk':
                     finder = bs.find_all('p')
 
                     try:
-                        for data in finder:
-                            classify_text(data)
+                        for url in content2:
+                            classify_text(str(finder))
 
                     except InvalidArgument as e:
                         print(f'{e} ~ {url}')
