@@ -239,10 +239,7 @@ if decision == 'bulk':
 
         # Content Classification (gnl-classify.content.py)
         if choice == 'B' or choice == 'b':
-
-
             def classify_text(text):
-                file = open('gnl.csv', 'a')
                 """Classifies content categories of the provided text."""
                 client = language.LanguageServiceClient()
 
@@ -256,22 +253,19 @@ if decision == 'bulk':
                 categories = client.classify_text(document).categories
 
                 for category in categories:
+                    print(u'=' * 20)
                     print(u'{:<16}: {}'.format('url', url))
                     print(u'{:<16}: {}'.format('name', category.name))
-                    print(u'{:<16}: {}'.format('confidence', category.confidence) + '\n')
+                    print(u'{:<16}: {}'.format('confidence', category.confidence))
+                    print(u'{:<16}: {}'.format('string', data))
 
-                    file.write(u'{:<16}: {}'.format('name', category.name) + '\n')
-                    file.write(u'{:<16}: {}'.format('confidence', category.confidence) + '\n')
-                    file.write('\n')
-                file.close()
 
             with open('urls-gnl.txt', 'r') as b:
-                content2 = b.readlines()
-                content2 = [line.rstrip('\n') for line in content2]
-                for url in content2:
+                content = b.readlines()
+                content = [line.rstrip('\n') for line in content]
+                for url in content:
 
                     try:
-                        
                         html = urlopen(url)
 
                     except HTTPError as e:
@@ -280,12 +274,10 @@ if decision == 'bulk':
 
                     bs = BeautifulSoup(html, 'html.parser')
 
-                    finder = bs.find_all('p')
-
+                    content = bs.find_all('p')
                     try:
-                        for url in content2:
-                            classify_text(str(finder))
-
+                        for data in content:
+                            classify_text(data)
                     except InvalidArgument as e:
                         print(f'{e} ~ {url}')
 
