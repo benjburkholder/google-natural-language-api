@@ -7,13 +7,14 @@ from google.cloud.language import enums
 from google.cloud.language import types
 from google.api_core.exceptions import InvalidArgument
 import six
+import sys
 
 # User indicates upload method
 print('-' * 20)
 print('Running bulk URLs? (bulk)')
 print('Uploading content directly? (direct)')
 print('')
-decision = input('Enter choice: ')
+decision = input('Enter upload type: ')
 
 # Handles content entered directly into .txt file
 if decision == 'direct':
