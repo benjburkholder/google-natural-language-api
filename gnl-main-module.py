@@ -36,7 +36,7 @@ if decision == 'direct':
         # Content Classification (gnl-classify.content.py)
         if choice == 'B' or choice == 'b':
 
-            with open('gnl-manual-upload.txt', 'r') as gnl:
+            with open('gnl-direct-check.txt', 'r') as gnl:
                 content = gnl.read()
                 content = str(content)
                 
@@ -76,7 +76,7 @@ if decision == 'direct':
 
         # Sentiment Analysis (google-natural-language-api.py)
         if choice == 'A' or choice == 'a':
-            with open('gnl-manual-upload.txt', 'r') as gnl:
+            with open('gnl-direct-check.txt', 'r') as gnl:
                 content2 = gnl.read()
                 file = open('gnl.csv', 'a')
 
@@ -91,18 +91,20 @@ if decision == 'direct':
                 sentiment = client.analyze_sentiment(
                     document=document).document_sentiment
 
-                # print('Text: {}'.format(content2))
+                print('Content: {}'.format(content2))
                 print('Sentiment: {}, {}'.format(
                     sentiment.score, sentiment.magnitude))
-                # file.write('Text: {}'.format(content2))
+
+                """
                 file.write('Sentiment: {}, {}'.format(
                     sentiment.score, sentiment.magnitude) + '\n')
                 file.write('\n')
                 file.close()
+                """
 
         # Entity Sentiment (gnl-entity-sentiment.py)
         if choice == 'D' or choice == 'd':
-            with open('gnl-manual-upload.txt', 'r') as gnl:
+            with open('gnl-direct-check.txt', 'r') as gnl:
                 content3 = gnl.read()
                 file = open('gnl.csv', 'a')
 
@@ -158,7 +160,7 @@ if decision == 'direct':
 
         # Entity Analysis (gnl-entities.py)
         if choice == 'C' or choice == 'c':
-            with open('gnl-manual-upload.txt', 'r') as gnl:
+            with open('gnl-direct-check.txt', 'r') as gnl:
                 content4 = gnl.read()
                 file = open('gnl.csv', 'a')
                 client = language.LanguageServiceClient()
@@ -194,7 +196,7 @@ if decision == 'direct':
 
         # Syntax Analysis (gnl-analyze-syntax.py)
         if choice == 'E' or choice == 'e':
-            with open('gnl-manual-upload.txt', 'r') as gnl:
+            with open('gnl-direct-check.txt', 'r') as gnl:
                 content5 = gnl.read()
                 file = open('gnl.csv', 'a')
 
