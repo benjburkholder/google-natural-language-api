@@ -462,6 +462,7 @@ if decision == 'bulk':
                             print(u'{:<16}: {}'.format('salience', entity.salience))
                             print(u'{:<16}: {}'.format('wikipedia_url', entity.metadata.get('wikipedia_url', '-')))
                             print(u'{:<16}: {}'.format('mid', entity.metadata.get('mid', '-')))
+                            #print(u'{:<16}: {}'.format('string', content))
 
                             file.write(u'{:<16}~ {}'.format('url', url)+ '\n')
                             file.write(u'{:<16}: {}'.format('name', entity.name) + '\n')

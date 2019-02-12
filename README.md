@@ -8,6 +8,7 @@
 There are two methods for analysis:
 - Bulk URL Check ~ Meaning a list of URLs can be run and analyzed in succession.
 - Direct Check ~ Meaning that content is copied from a webpage/or custom written and only this content is analyzed.
+    This also useful when a site throws up 403s, you can just copy and paste some content to analyze rather than requesting the URLs.
 
 The two files that need to be created locally to pull URLs/content from:
 - Bulk URL Check ~ 'gnl-bulk-check.txt'
