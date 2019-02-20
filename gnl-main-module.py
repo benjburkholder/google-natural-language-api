@@ -31,7 +31,7 @@ if decision == 'direct':
         print('')
 
         # Each analysis will correspond with a letter from the list above.
-        #choice = input('Which Analysis to Run? ')
+        choice = input('Which Analysis to Run? ')
 
         # Content Classification (gnl-classify.content.py)
         if choice == 'B' or choice == 'b':
@@ -39,10 +39,14 @@ if decision == 'direct':
             with open('gnl-direct-check.txt', 'r') as gnl:
                 content = gnl.read()
                 content = str(content)
+
+                downloadFile = 'gnl-content-direct.csv'
+                file = open(downloadFile, 'a')
+                columnHead = 'String,Name,Confidence\n'
+                file.write(columnHead)
                 
                 def classify_text(text):
-                    file = open('gnl.csv', 'a')
-                    """Classifies content categories of the provided text."""
+
                     client = language.LanguageServiceClient()
 
                     if isinstance(text, six.binary_type):
@@ -61,11 +65,8 @@ if decision == 'direct':
                         print(u'{:<16}: {}'.format('content', content) + '\n')
                         print('')
                         
-                        file.write(u'{:<16}: {}'.format(
-                            'name', category.name) + '\n')
-                        file.write(u'{:<16}: {}'.format(
-                            'confidence', category.confidence) + '\n')
-                        file.write('\n')
+                        row = f'"{content}",{category.name},{category.confidence}\n'
+                        file.write(row)
                     file.close()
                         
                 try:
@@ -251,7 +252,7 @@ if decision == 'bulk':
         if choice == 'B' or choice == 'b':
 
             filedownload = 'gnl-content-bulk.csv'
-            file = open(filedownload, 'w')
+            file = open(filedownload, 'a')
 
             columnHead = 'URL,Name,Confidence,String\n'
             file.write(columnHead)
