@@ -31,7 +31,7 @@ if decision == 'direct':
         print('')
 
         # Each analysis will correspond with a letter from the list above.
-        choice = input('Which Analysis to Run? ')
+        #choice = input('Which Analysis to Run? ')
 
         # Content Classification (gnl-classify.content.py)
         if choice == 'B' or choice == 'b':
@@ -249,8 +249,15 @@ if decision == 'bulk':
 
         # Content Classification (gnl-classify.content.py)
         if choice == 'B' or choice == 'b':
+
+            filedownload = 'gnl-content-bulk.csv'
+            file = open(filedownload, 'w')
+
+            columnHead = 'URL,Name,Confidence,String\n'
+            file.write(columnHead)
+
             def classify_text(text):
-                file = open('gnl.csv', 'a')
+
                 """Classifies content categories of the provided text."""
                 client = language.LanguageServiceClient()
 
@@ -269,12 +276,10 @@ if decision == 'bulk':
                     print(u'{:<16}: {}'.format('name', category.name))
                     print(u'{:<16}: {}'.format('confidence', category.confidence))
                     print(u'{:<16}: {}'.format('string', data) + '\n')
-                    
-                    file.write(u'{:<16}: {}'.format('url', url))
-                    file.write(u'{:<16}: {}'.format('name', category.name))
-                    file.write(u'{:<16}: {}'.format('confidence', category.confidence))
-                    file.write(u'{:<16}: {}'.format('string', data) + '\n')
-                file.close()
+
+
+                    row = f'{url},{category.name},{category.confidence},"{data}"\n'
+                    file.write(row)
 
 
             with open('gnl-bulk-check.txt', 'r') as b:
@@ -297,6 +302,8 @@ if decision == 'bulk':
                             classify_text(data)
                     except InvalidArgument as e:
                         print(f'{e} ~ {url}')
+
+            file.close()
 
 
         # Sentiment Analysis (google-natural-language-api.py)
