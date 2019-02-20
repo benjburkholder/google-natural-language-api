@@ -311,7 +311,11 @@ if decision == 'bulk':
         if choice == 'A' or choice == 'a':
             
             with open('gnl-bulk-check.txt', 'r') as b:
-                    file = open('gnl.csv', 'a')
+                    downloadFile = 'gnl-sentiment-bulk.csv'
+                    file = open(downloadFile, 'a')
+                    columnHead = 'URL,Sentiment\n'
+                    file.write(columnHead)
+
                     content = b.readlines()
                     content = [line.rstrip('\n') for line in content]
                     for url in content:
@@ -344,10 +348,8 @@ if decision == 'bulk':
                             sentiment.score, sentiment.magnitude) + '\n')
                         print('')
                         
-                        file.write('URL~ {}'.format(url))
-                        file.write('Sentiment: {}, {}'.format(
-                            sentiment.score, sentiment.magnitude) + '\n')
-                        file.write('\n')
+                        row = f'{url},{sentiment.magnitude}\n'
+                        file.write(row)
                     file.close()
                         
 
