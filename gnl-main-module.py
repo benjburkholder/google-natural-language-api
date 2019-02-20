@@ -41,7 +41,7 @@ if decision == 'direct':
                 content = str(content)
 
                 downloadFile = 'gnl-content-direct.csv'
-                file = open(downloadFile, 'a')
+                file = open(downloadFile, 'w')
                 columnHead = 'String,Name,Confidence\n'
                 file.write(columnHead)
                 
@@ -252,7 +252,7 @@ if decision == 'bulk':
         if choice == 'B' or choice == 'b':
 
             filedownload = 'gnl-content-bulk.csv'
-            file = open(filedownload, 'a')
+            file = open(filedownload, 'w')
 
             columnHead = 'URL,Name,Confidence,String\n'
             file.write(columnHead)
@@ -312,7 +312,7 @@ if decision == 'bulk':
             
             with open('gnl-bulk-check.txt', 'r') as b:
                     downloadFile = 'gnl-sentiment-bulk.csv'
-                    file = open(downloadFile, 'a')
+                    file = open(downloadFile, 'w')
                     columnHead = 'URL,Sentiment\n'
                     file.write(columnHead)
 
@@ -355,9 +355,14 @@ if decision == 'bulk':
 
         # Entity Sentiment (gnl-entity-sentiment.py)
         if choice == 'D' or choice == 'd':
+                downloadFile = 'gnl-entity-sent-bulk.csv'
+                file = open(downloadFile, 'w')
+
+                columnHead = 'URL,Name,Begin Offset,Content,Magnitude,Sentiment,Type,Salience,Entity Sentiment\n'
+                file.write(columnHead)
 
                 def entity_sentiment_text(text):
-                    file = open('gnl.csv', 'a')
+
                     """Detects entity sentiment in the provided text."""
                     client = language.LanguageServiceClient()
 
@@ -391,26 +396,15 @@ if decision == 'bulk':
                             print(u'Salience: {}'.format(entity.salience))
                             print(u'Sentiment: {}\n'.format(entity.sentiment))
                             
-                            
-                            file.write(u'  Begin Offset : {}'.format(
-                                mention.text.begin_offset) + '\n')
-                            file.write(u'  Content : {}'.format(
-                                mention.text.content) + '\n')
-                            file.write(u'  Magnitude : {}'.format(
-                                mention.sentiment.magnitude) + '\n')
-                            file.write(u'  Sentiment : {}'.format(
-                                mention.sentiment.score) + '\n')
-                            file.write(u'  Type : {}'.format(mention.type) + '\n')
-                            file.write(u'Salience: {}'.format(
-                                entity.salience) + '\n')
-                            file.write(u'Sentiment: {}\n'.format(
-                                entity.sentiment) + '\n')
-                            file.write('\n')
-                    file.close()
-                            
+                            row2 = f'{url},{entity.name},{mention.text.begin_offset},{mention.text.content},{mention.sentiment.magnitude}\
+                                {mention.type},{entity.salience},{entity.sentiment}\n'
+
+                    file.write(row2)
+
                 with open('gnl-bulk-check.txt', 'r') as b:
                     content = b.readlines()
                     content = [line.rstrip('\n') for line in content]
+
                     for url in content:
 
                         try:
@@ -428,60 +422,64 @@ if decision == 'bulk':
                                 entity_sentiment_text(data)
                         except InvalidArgument as e:
                             print(f'{e} ~ {url}')
+                file.close()
 
         # Entity Analysis (gnl-entities.py)
         if choice == 'C' or choice == 'c':
             with open('gnl-bulk-check.txt', 'r') as b:
-                    file = open('gnl.csv', 'a')
-                    content = b.readlines()
-                    content = [line.rstrip('\n') for line in content]
-                    for url in content:
 
-                        try:
-                            html = urlopen(url)
+                downloadFile = 'gnl-entity-bulk.csv'
+                file = open(downloadFile, 'w')
 
-                        except HTTPError as e:
+                columnHead = 'URL,Name,Type,Salience,Wikipedia URL,MID\n'
+                file.write(columnHead)
+                content = b.readlines()
+                content = [line.rstrip('\n') for line in content]
+                for url in content:
 
-                            print(f'{e} ~ {url}')
+                    try:
+                        html = urlopen(url)
 
-                        bs = BeautifulSoup(html, 'html.parser')
+                    except HTTPError as e:
 
-                        content = bs.find_all('p')
-                        content = str(content)
+                        print(f'{e} ~ {url}')
+
+                    bs = BeautifulSoup(html, 'html.parser')
+
+                    content = bs.find_all('p')
+                    content = str(content)
                         
-                        client = language.LanguageServiceClient()
+                    client = language.LanguageServiceClient()
 
-                        if isinstance(content, six.binary_type):
+                    if isinstance(content, six.binary_type):
                             content = content.decode('utf-8')
 
-                        # Instantiates a plain text document.
-                        document = types.Document(
+                    # Instantiates a plain text document.
+                    document = types.Document(
                             content=content,
                             type=enums.Document.Type.PLAIN_TEXT)
 
                         # Detects entities in the document. You can also analyze HTML with:
                         # Document.type == enums.Document.Type.HTML
-                        entities = client.analyze_entities(document).entities
+                    entities = client.analyze_entities(document).entities
 
-                        for entity in entities:
-                            entity_type = enums.Entity.Type(entity.type)
-                            print('=' * 20)
-                            print(u'{:<16}~ {}'.format('url', url))
-                            print(u'{:<16}: {}'.format('name', entity.name))
-                            print(u'{:<16}: {}'.format('type', entity_type.name))
-                            print(u'{:<16}: {}'.format('salience', entity.salience))
-                            print(u'{:<16}: {}'.format('wikipedia_url', entity.metadata.get('wikipedia_url', '-')))
-                            print(u'{:<16}: {}'.format('mid', entity.metadata.get('mid', '-')))
+                    for entity in entities:
+                        entity_type = enums.Entity.Type(entity.type)
+                        print('=' * 20)
+                        print(u'{:<16}~ {}'.format('url', url))
+                        print(u'{:<16}: {}'.format('name', entity.name))
+                        print(u'{:<16}: {}'.format('type', entity_type.name))
+                        print(u'{:<16}: {}'.format('salience', entity.salience))
+                        print(u'{:<16}: {}'.format('wikipedia_url', entity.metadata.get('wikipedia_url', '-')))
+                        print(u'{:<16}: {}'.format('mid', entity.metadata.get('mid', '-')))
                             #print(u'{:<16}: {}'.format('string', content))
 
-                            file.write(u'{:<16}~ {}'.format('url', url)+ '\n')
-                            file.write(u'{:<16}: {}'.format('name', entity.name) + '\n')
-                            file.write(u'{:<16}: {}'.format('type', entity_type.name) + '\n')
-                            file.write(u'{:<16}: {}'.format('salience', entity.salience) + '\n')
-                            file.write(u'{:<16}: {}'.format('wikipedia_url', entity.metadata.get('wikipedia_url', '-')) + '\n')
-                            file.write(u'{:<16}: {}'.format('mid', entity.metadata.get('mid', '-')) + '\n')
-                            file.write('\n')
-                    file.close()
+                        row = f'{url},{entity.name},{entity_type.name},{entity.salience},{entity.metadata.get("wikipedia_url")},{entity.metadata.get("mid")}\n'
+                        file.write(row)
+
+
+
+                file.close()
                             
 
         # This if statment handles if while loop continues or breaks based on user input
