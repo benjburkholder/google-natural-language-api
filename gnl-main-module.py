@@ -77,9 +77,14 @@ if decision == 'direct':
 
         # Sentiment Analysis (google-natural-language-api.py)
         if choice == 'A' or choice == 'a':
+
             with open('gnl-direct-check.txt', 'r') as gnl:
+                downloadFile = 'gnl-sentiment-direct.csv'
+                file = open(downloadFile, 'w')
                 content2 = gnl.read()
-                file = open('gnl.csv', 'a')
+
+                columnHead = 'Content,Sentiment Score,Sentiment Magnitude\n'
+                file.write(columnHead)
 
                 # Instantiates a client
                 client = language.LanguageServiceClient()
@@ -96,18 +101,20 @@ if decision == 'direct':
                 print('Sentiment: {}, {}'.format(
                     sentiment.score, sentiment.magnitude))
 
-                file.write('Content: {}'.format(content2))
-                file.write('Sentiment: {}, {}'.format(
-                    sentiment.score, sentiment.magnitude) + '\n')
-                file.write('\n')
+                row = f'"{content2}",{sentiment.score},{sentiment.magnitude}\n'
+                file.write(row)
                 file.close()
                 
 
         # Entity Sentiment (gnl-entity-sentiment.py)
         if choice == 'D' or choice == 'd':
             with open('gnl-direct-check.txt', 'r') as gnl:
+                downloadFile = 'gnl-entity-sent-direct.csv'
+                file = open(downloadFile, 'w')
                 content3 = gnl.read()
-                file = open('gnl.csv', 'a')
+
+                columnHead = 'Name,Begin Offset,Content,Magnitude,Sentiment,Type,Salience,Sentiment\n'
+                file.write(columnHead)
 
                 def entity_sentiment_text(text):
                     """Detects entity sentiment in the provided text."""
@@ -142,20 +149,10 @@ if decision == 'direct':
                             print(u'Salience: {}'.format(entity.salience))
                             print(u'Sentiment: {}\n'.format(entity.sentiment))
 
-                            file.write(u'  Begin Offset : {}'.format(
-                                mention.text.begin_offset) + '\n')
-                            file.write(u'  Content : {}'.format(
-                                mention.text.content) + '\n')
-                            file.write(u'  Magnitude : {}'.format(
-                                mention.sentiment.magnitude) + '\n')
-                            file.write(u'  Sentiment : {}'.format(
-                                mention.sentiment.score) + '\n')
-                            file.write(u'  Type : {}'.format(mention.type) + '\n')
-                            file.write(u'Salience: {}'.format(
-                                entity.salience) + '\n')
-                            file.write(u'Sentiment: {}\n'.format(
-                                entity.sentiment) + '\n')
-                            file.write('\n')
+                            row = f'"{entity.name}",{mention.text.begin_offset},{mention.text.content},' \
+                                f'{mention.sentiment.magnitude},{mention.sentiment.score},{mention.type},' \
+                                f'{entity.salience},{entity.sentiment}\n'
+                            file.write(row)
                     file.close()
                 entity_sentiment_text(content3)
 
