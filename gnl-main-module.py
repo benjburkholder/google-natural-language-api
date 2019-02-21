@@ -159,8 +159,12 @@ if decision == 'direct':
         # Entity Analysis (gnl-entities.py)
         if choice == 'C' or choice == 'c':
             with open('gnl-direct-check.txt', 'r') as gnl:
+                downloadFile = 'gnl-entity-analysis-direct.csv'
+                file = open(downloadFile, 'w')
                 content4 = gnl.read()
-                file = open('gnl.csv', 'a')
+                columnHead = 'Name,Type,Salience,Wikipedia URL,MID\n'
+                file.write(columnHead)
+
                 client = language.LanguageServiceClient()
 
                 if isinstance(content4, six.binary_type):
@@ -184,19 +188,19 @@ if decision == 'direct':
                     print(u'{:<16}: {}'.format('wikipedia_url', entity.metadata.get('wikipedia_url', '-')))
                     print(u'{:<16}: {}'.format('mid', entity.metadata.get('mid', '-')))
 
-                    file.write(u'{:<16}: {}'.format('name', entity.name) + '\n')
-                    file.write(u'{:<16}: {}'.format('type', entity_type.name) + '\n')
-                    file.write(u'{:<16}: {}'.format('salience', entity.salience) + '\n')
-                    file.write(u'{:<16}: {}'.format('wikipedia_url', entity.metadata.get('wikipedia_url', '-')) + '\n')
-                    file.write(u'{:<16}: {}'.format('mid', entity.metadata.get('mid', '-')) + '\n')
-                    file.write('\n')
+                    row = f'{entity.name},{entity_type.name},{entity.salience},{entity.metadata.get("wikipedia_url")},{entity.metadata.get("mid")}\n'
+                    file.write(row)
                 file.close()
 
         # Syntax Analysis (gnl-analyze-syntax.py)
         if choice == 'E' or choice == 'e':
             with open('gnl-direct-check.txt', 'r') as gnl:
+                downloadFile = 'gnl-syntax-analysis.csv'
+                file = open(downloadFile, 'w')
                 content5 = gnl.read()
-                file = open('gnl.csv', 'a')
+
+                columnHead = 'POS Tag,Content\n'
+                file.write(columnHead)
 
                 def syntax_text(text):
                     """Detects syntax in the text."""
@@ -219,8 +223,8 @@ if decision == 'direct':
 
                     for token in tokens:
                         print(u'{}: {}'.format(pos_tag[token.part_of_speech.tag], token.text.content))
-                        file.write(u'{}: {}'.format(pos_tag[token.part_of_speech.tag], token.text.content) + '\n')
-                        file.write('\n')
+                        row = f'{pos_tag[token.part_of_speech.tag]},{token.text.content}\n'
+                        file.write(row)
                     file.close()
                 syntax_text(content5)
 
