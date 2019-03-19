@@ -188,7 +188,8 @@ if decision == 'direct':
                     print(u'{:<16}: {}'.format('wikipedia_url', entity.metadata.get('wikipedia_url', '-')))
                     print(u'{:<16}: {}'.format('mid', entity.metadata.get('mid', '-')))
 
-                    row = f'{entity.name},{entity_type.name},{entity.salience},{entity.metadata.get("wikipedia_url")},{entity.metadata.get("mid")}\n'
+                    row = f'{entity.name},{entity_type.name},{entity.salience},{entity.metadata.get("wikipedia_url")},\
+                    {entity.metadata.get("mid")}\n'
                     file.write(row)
                 file.close()
 
@@ -397,7 +398,8 @@ if decision == 'bulk':
                             print(u'Salience: {}'.format(entity.salience))
                             print(u'Sentiment: {}\n'.format(entity.sentiment))
                             
-                            row2 = f'{url},{entity.name},{mention.text.begin_offset},{mention.text.content},{mention.sentiment.magnitude}\
+                            row2 = f'{url},{entity.name},{mention.text.begin_offset},{mention.text.content},\
+                            {mention.sentiment.magnitude}\
                                 {mention.type},{entity.salience},{entity.sentiment}\n'
 
                     file.write(row2)
@@ -475,7 +477,8 @@ if decision == 'bulk':
                         print(u'{:<16}: {}'.format('mid', entity.metadata.get('mid', '-')))
                             #print(u'{:<16}: {}'.format('string', content))
 
-                        row = f'{url},{entity.name},{entity_type.name},{entity.salience},{entity.metadata.get("wikipedia_url")},{entity.metadata.get("mid")}\n'
+                        row = f'{url},{entity.name},{entity_type.name},{entity.salience},\
+                        {entity.metadata.get("wikipedia_url")},{entity.metadata.get("mid")}\n'
                         file.write(row)
 
 
