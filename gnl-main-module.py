@@ -42,7 +42,7 @@ if decision == 'direct':
 
                 downloadFile = 'gnl-content-direct.csv'
                 file = open(downloadFile, 'w')
-                columnHead = 'String,Name,Confidence\n'
+                columnHead = 'String,Type,Confidence\n'
                 file.write(columnHead)
                 
                 def classify_text(text):
@@ -59,7 +59,7 @@ if decision == 'direct':
                     categories = client.classify_text(document).categories
 
                     for category in categories:
-                        print(u'{:<16}: {}'.format('name', category.name))
+                        print(u'{:<16}: {}'.format('type', category.name))
                         print(u'{:<16}: {}'.format(
                             'confidence', category.confidence))
                         print(u'{:<16}: {}'.format('content', content) + '\n')
@@ -256,7 +256,7 @@ if decision == 'bulk':
             filedownload = 'gnl-content-bulk.csv'
             file = open(filedownload, 'w')
 
-            columnHead = 'URL,Name,Confidence,String\n'
+            columnHead = 'URL,Type,Confidence\n'
             file.write(columnHead)
 
             def classify_text(text):
@@ -276,12 +276,11 @@ if decision == 'bulk':
                 for category in categories:
                     print(u'=' * 20)
                     print(u'{:<16}: {}'.format('url', url))
-                    print(u'{:<16}: {}'.format('name', category.name))
+                    print(u'{:<16}: {}'.format('type', category.name))
                     print(u'{:<16}: {}'.format('confidence', category.confidence))
-                    print(u'{:<16}: {}'.format('string', data) + '\n')
+                    # print(u'{:<16}: {}'.format('string', data) + '\n')
 
-
-                    row = f'{url},{category.name},{category.confidence},"{data}"\n'
+                    row = f'{url},{category.name},{category.confidence}\n'
                     file.write(row)
 
 
