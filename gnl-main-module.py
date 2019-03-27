@@ -301,21 +301,12 @@ if decision == 'bulk':
                     content = bs.find_all('p')
 
                     tagRemoval = re.compile(r'<[^>]+>')
-<<<<<<< HEAD
 
                     def remove_tags(text):
                         final = tagRemoval.sub('', text)
                         print(final)
                         classify_text(final)
 
-=======
-
-                    def remove_tags(text):
-                        final = tagRemoval.sub('', text)
-                        print(final)
-                        classify_text(final)
-
->>>>>>> efc4f1522fd681f359ee381e1ad61a9db55deaa7
                     content = str(content)
                     remove_tags(content)
             file.close()
