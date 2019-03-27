@@ -299,6 +299,7 @@ if decision == 'bulk':
                     bs = BeautifulSoup(html, 'html.parser')
 
                     content = bs.find_all('p')
+
                     try:
                         for data in content:
                             classify_text(data)
@@ -306,7 +307,6 @@ if decision == 'bulk':
                         print(f'{e} ~ {url}')
 
             file.close()
-
 
         # Sentiment Analysis (google-natural-language-api.py)
         if choice == 'A' or choice == 'a':
