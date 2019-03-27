@@ -8,6 +8,7 @@ from google.cloud.language import types
 from google.api_core.exceptions import InvalidArgument
 import six
 import sys
+import re
 
 # User indicates upload method
 print('-' * 20)
@@ -74,7 +75,6 @@ if decision == 'direct':
                 except InvalidArgument as e:
                     print(f'{e}')
 
-
         # Sentiment Analysis (google-natural-language-api.py)
         if choice == 'A' or choice == 'a':
 
@@ -104,7 +104,6 @@ if decision == 'direct':
                 row = f'"{content2}",{sentiment.score},{sentiment.magnitude}\n'
                 file.write(row)
                 file.close()
-                
 
         # Entity Sentiment (gnl-entity-sentiment.py)
         if choice == 'D' or choice == 'd':
@@ -229,12 +228,12 @@ if decision == 'direct':
                     file.close()
                 syntax_text(content5)
 
-        # This if statment handles if while loop continues or breaks based on user input
+        # This if statement handles if while loop continues or breaks based on user input
         decision = input('Run another analysis? (Y/N) ')
         if decision == 'N' or decision == 'n':
             break
 
-# ---- Handles bulk URL check ----
+    # ---- Handles bulk URL check ----
 if decision == 'bulk':
     while True:
         print('-' * 20)
@@ -258,6 +257,7 @@ if decision == 'bulk':
 
             columnHead = 'URL,Type,Confidence\n'
             file.write(columnHead)
+
 
             def classify_text(text):
 
@@ -283,10 +283,10 @@ if decision == 'bulk':
                     row = f'{url},{category.name},{category.confidence}\n'
                     file.write(row)
 
-
             with open('gnl-bulk-check.txt', 'r') as b:
                 content = b.readlines()
                 content = [line.rstrip('\n') for line in content]
+
                 for url in content:
 
                     try:
@@ -300,12 +300,15 @@ if decision == 'bulk':
 
                     content = bs.find_all('p')
 
-                    try:
-                        for data in content:
-                            classify_text(data)
-                    except InvalidArgument as e:
-                        print(f'{e} ~ {url}')
+                    tagRemoval = re.compile(r'<[^>]+>')
 
+                    def remove_tags(text):
+                        final = tagRemoval.sub('', text)
+                        print(final)
+                        classify_text(final)
+
+                    content = str(content)
+                    remove_tags(content)
             file.close()
 
         # Sentiment Analysis (google-natural-language-api.py)
@@ -352,7 +355,6 @@ if decision == 'bulk':
                         row = f'{url},{sentiment.magnitude}\n'
                         file.write(row)
                     file.close()
-                        
 
         # Entity Sentiment (gnl-entity-sentiment.py)
         if choice == 'D' or choice == 'd':
@@ -461,8 +463,8 @@ if decision == 'bulk':
                             content=content,
                             type=enums.Document.Type.PLAIN_TEXT)
 
-                        # Detects entities in the document. You can also analyze HTML with:
-                        # Document.type == enums.Document.Type.HTML
+                    # Detects entities in the document. You can also analyze HTML with:
+                    # Document.type == enums.Document.Type.HTML
                     entities = client.analyze_entities(document).entities
 
                     for entity in entities:
@@ -474,18 +476,14 @@ if decision == 'bulk':
                         print(u'{:<16}: {}'.format('salience', entity.salience))
                         print(u'{:<16}: {}'.format('wikipedia_url', entity.metadata.get('wikipedia_url', '-')))
                         print(u'{:<16}: {}'.format('mid', entity.metadata.get('mid', '-')))
-                            #print(u'{:<16}: {}'.format('string', content))
 
                         row = f'{url},{entity.name},{entity_type.name},{entity.salience},\
                         {entity.metadata.get("wikipedia_url")},{entity.metadata.get("mid")}\n'
                         file.write(row)
 
-
-
                 file.close()
-                            
 
-        # This if statment handles if while loop continues or breaks based on user input
+        # This if statement handles if while loop continues or breaks based on user input
         decision = input('Run another analysis? (Y/N) ')
         if decision == 'N' or decision == 'n':
             break
