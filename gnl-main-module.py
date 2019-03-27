@@ -219,7 +219,8 @@ if decision == 'direct':
                     tokens = client.analyze_syntax(document).tokens
 
                     # part-of-speech tags from enums.PartOfSpeech.Tag
-                    pos_tag = ('UNKNOWN', 'ADJ', 'ADP', 'ADV', 'CONJ', 'DET', 'NOUN', 'NUM', 'PRON', 'PRT', 'PUNCT', 'VERB', 'X', 'AFFIX')
+                    pos_tag = ('UNKNOWN', 'ADJ', 'ADP', 'ADV', 'CONJ', 'DET', 'NOUN', 'NUM', 'PRON', 'PRT', 'PUNCT',
+                               'VERB', 'X', 'AFFIX')
 
                     for token in tokens:
                         print(u'{}: {}'.format(pos_tag[token.part_of_speech.tag], token.text.content))
