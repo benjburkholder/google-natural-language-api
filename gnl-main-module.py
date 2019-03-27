@@ -298,11 +298,11 @@ if decision == 'bulk':
 
                     bs = BeautifulSoup(html, 'html.parser')
 
-                    content = bs.find_all('p')
+                    content = bs.find_all('p')  # Finds all <p> tags in content and saves to variable
 
-                    tagRemoval = re.compile(r'<[^>]+>')
+                    tagRemoval = re.compile(r'<[^>]+>')  # This regex removes all text between and including HTML tags
 
-                    def remove_tags(text):
+                    def remove_tags(text):  # This is the function called with the text to be stripped of HTML tags
                         final = tagRemoval.sub('', text)
                         print(final)
                         classify_text(final)
