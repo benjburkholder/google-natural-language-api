@@ -299,7 +299,7 @@ if decision == 'bulk':
 
                     bs = BeautifulSoup(html, 'html.parser')
 
-                    content = bs.find_all('p')  # Finds all content within <p> tags and saves to variable
+                    content = bs.find_all('html')  # Finds all content within <html> tags and saves to variable
 
                     tagRemoval = re.compile(r'<[^>]+>')  # This regex removes all text between and including HTML tags
 
