@@ -252,6 +252,7 @@ if decision == 'bulk':
 
         # Content Classification (gnl-classify.content.py)
         if choice == 'B' or choice == 'b':
+            tagTarget = input('Target which tag type? (E.g. p, div): ')  # Allows user to select which tags to target
 
             filedownload = 'gnl-content-bulk.csv'
             file = open(filedownload, 'w')
@@ -299,7 +300,7 @@ if decision == 'bulk':
 
                     bs = BeautifulSoup(html, 'html.parser')
 
-                    content = bs.find_all('html')  # Finds all content within <html> tags and saves to variable
+                    content = bs.find_all(tagTarget)  # Finds all content within <html> tags and saves to variable
 
                     tagRemoval = re.compile(r'<[^>]+>')  # This regex removes all text between and including HTML tags
 
