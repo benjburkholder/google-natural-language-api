@@ -1,7 +1,6 @@
 
 import requests
-from urllib.request import urlopen
-from urllib.error import HTTPError
+from requests.exceptions import ConnectionError
 from bs4 import BeautifulSoup
 from google.cloud import language
 from google.cloud.language import enums
@@ -295,7 +294,7 @@ if decision == 'bulk':
                     try:
                         html = requests.get(url, verify=False)
 
-                    except HTTPError as e:
+                    except ConnectionError as e:
 
                         print(f'{e} ~ {url}')
 
@@ -330,7 +329,7 @@ if decision == 'bulk':
                         try:
                             html = requests.get(url, verify=False)
 
-                        except HTTPError as e:
+                        except ConnectionError as e:
 
                             print(f'{e} ~ {url}')
 
@@ -417,7 +416,7 @@ if decision == 'bulk':
                         try:
                             html = requests.get(url, verify=False)
 
-                        except HTTPError as e:
+                        except ConnectionError as e:
 
                             print(f'{e} ~ {url}')
 
@@ -447,7 +446,7 @@ if decision == 'bulk':
                     try:
                         html = requests.get(url, verify=False)
 
-                    except HTTPError as e:
+                    except ConnectionError as e:
 
                         print(f'{e} ~ {url}')
 
