@@ -257,7 +257,7 @@ if decision == 'bulk':
             filedownload = 'gnl-content-bulk.csv'
             file = open(filedownload, 'w')
 
-            columnHead = 'URL,Type,Confidence\n'
+            columnHead = 'URL,Type,Confidence,Content\n'
             file.write(columnHead)
 
 
@@ -282,17 +282,19 @@ if decision == 'bulk':
                     print(u'{:<16}: {}'.format('confidence', category.confidence))
                     # print(u'{:<16}: {}'.format('string', data) + '\n')
 
-                    row = f'{url},{category.name},{category.confidence}\n'
+                    row = f'{url},{category.name},{category.confidence},"{text}"\n'
                     file.write(row)
 
             with open('gnl-bulk-check.txt', 'r') as b:
                 content = b.readlines()
                 content = [line.rstrip('\n') for line in content]
+                headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML,'
+                                         ' like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
 
                 for url in content:
 
                     try:
-                        html = requests.get(url, verify=False)
+                        html = requests.get(url, headers=headers, verify=False)
 
                     except ConnectionError as e:
 
@@ -324,10 +326,13 @@ if decision == 'bulk':
 
                     content = b.readlines()
                     content = [line.rstrip('\n') for line in content]
+                    headers = {
+                        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML,'
+                                      ' like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
                     for url in content:
 
                         try:
-                            html = requests.get(url, verify=False)
+                            html = requests.get(url, headers=headers, verify=False)
 
                         except ConnectionError as e:
 
@@ -410,11 +415,14 @@ if decision == 'bulk':
                 with open('gnl-bulk-check.txt', 'r') as b:
                     content = b.readlines()
                     content = [line.rstrip('\n') for line in content]
+                    headers = {
+                        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML,'
+                                      ' like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
 
                     for url in content:
 
                         try:
-                            html = requests.get(url, verify=False)
+                            html = requests.get(url, headers=headers, verify=False)
 
                         except ConnectionError as e:
 
@@ -441,10 +449,12 @@ if decision == 'bulk':
                 file.write(columnHead)
                 content = b.readlines()
                 content = [line.rstrip('\n') for line in content]
+                headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML,'
+                                         ' like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
                 for url in content:
 
                     try:
-                        html = requests.get(url, verify=False)
+                        html = requests.get(url, headers=headers, verify=False)
 
                     except ConnectionError as e:
 
