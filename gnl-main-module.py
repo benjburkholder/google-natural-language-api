@@ -1,4 +1,5 @@
 
+import requests
 from urllib.request import urlopen
 from urllib.error import HTTPError
 from bs4 import BeautifulSoup
@@ -292,13 +293,13 @@ if decision == 'bulk':
                 for url in content:
 
                     try:
-                        html = urlopen(url)
+                        html = requests.get(url, verify=False)
 
                     except HTTPError as e:
 
                         print(f'{e} ~ {url}')
 
-                    bs = BeautifulSoup(html, 'html.parser')
+                    bs = BeautifulSoup(html.text, 'html.parser')
 
                     content = bs.find_all(tagTarget)  # Finds all content within <html> tags and saves to variable
 
@@ -327,13 +328,13 @@ if decision == 'bulk':
                     for url in content:
 
                         try:
-                            html = urlopen(url)
+                            html = requests.get(url, verify=False)
 
                         except HTTPError as e:
 
                             print(f'{e} ~ {url}')
 
-                        bs = BeautifulSoup(html, 'html.parser')
+                        bs = BeautifulSoup(html.text, 'html.parser')
 
                         content = bs.find_all('p')
                         content = str(content)
@@ -414,13 +415,13 @@ if decision == 'bulk':
                     for url in content:
 
                         try:
-                            html = urlopen(url)
+                            html = requests.get(url, verify=False)
 
                         except HTTPError as e:
 
                             print(f'{e} ~ {url}')
 
-                        bs = BeautifulSoup(html, 'html.parser')
+                        bs = BeautifulSoup(html.text, 'html.parser')
 
                         content = bs.find_all('p')
                         try:
@@ -444,13 +445,13 @@ if decision == 'bulk':
                 for url in content:
 
                     try:
-                        html = urlopen(url)
+                        html = requests.get(url, verify=False)
 
                     except HTTPError as e:
 
                         print(f'{e} ~ {url}')
 
-                    bs = BeautifulSoup(html, 'html.parser')
+                    bs = BeautifulSoup(html.text, 'html.parser')
 
                     content = bs.find_all('p')
                     content = str(content)
